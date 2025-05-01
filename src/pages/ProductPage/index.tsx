@@ -35,20 +35,14 @@ const ProductPage = ({navigation}) => {
 
         {/* Images */}
         <View style={styles.imageRow}>
-          <Image
-            source={require('../../assets/Harringtons.svg')}
-            style={styles.image}
-          />
-          <Image
-            source={require('../../assets/Harringtons2.svg')}
-            style={styles.image}
-          />
+          <Text style={styles.image}>Image Preholder</Text>
+          <Text style={styles.image}>Image Preholder</Text>
         </View>
         <Gap height={50} />
         <View>
           {/* Product Info */}
           <Text style={styles.title}>Men's Harrington Jacket</Text>
-          <Text style={styles.price}>$148</Text>
+          <Text style={styles.price}>$148.00</Text>
 
           {/* Size Dropdown */}
           <Text style={styles.label}>Size</Text>
