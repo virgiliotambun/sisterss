@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import { Logo } from '../../assets';
-
+import Logo from '../../assets/logo.png'; // Import your logo image
 const SplashScreen = () => {
   return (
     <View style={styles.container}>
@@ -23,9 +22,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 120,
-    height: 120,
+    width: 200,
+    height: 200,
     resizeMode: 'contain',
+    borderRadius: 100, // Make it circular
   },
 });
 
