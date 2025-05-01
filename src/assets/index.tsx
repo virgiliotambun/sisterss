@@ -1,3 +1,6 @@
-import Logo from './logo.png';
+import Logo from './Logo.svg';
+import arrowBack from './arrow-back.svg';
+import OrderSuccessful from './OrderSuccessful.svg';
+import ProfileBroski from './ProfileBroski.svg';
 
-export {Logo};
+export {Logo, arrowBack, OrderSuccessful};
