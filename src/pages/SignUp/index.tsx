@@ -5,16 +5,14 @@ import TextInput from '../../components/molecules/TextInput';
 import Button from '../../components/atoms/Button';
 import Gap from '../../components/atoms/Gap';
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
   return (
     <View style={styles.pageContainer}>
       <Header title="Create Account" />
       <View style={styles.contentContainer}>
 
         <View style={styles.customerContainer}>
-          <TouchableOpacity style={styles.customerButton}>
-            <Text style={styles.customerText}>Customer</Text>
-          </TouchableOpacity>
+    
         </View>
         <Gap height={24} />
 
@@ -39,13 +37,13 @@ const SignUp = () => {
           style={styles.inputStyle}
         />
         <Gap height={24} />
-        <Button label="Continue" color="#FFCCE1" textColor="white" />
+        <Button label="Continue" color="#FFCCE1" textColor="white" onPress={() => navigation.navigate('SignIn')}/>
         <Gap height={16} />
         
         {/* BACK Button */}
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => {}}>
+          onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>BACK</Text>
         </TouchableOpacity>
       </View>

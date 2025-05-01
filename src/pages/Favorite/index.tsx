@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   Image,
   FlatList,
   TouchableOpacity,
@@ -41,16 +40,18 @@ const Products = [
   },
 ];
 
-const Favorite = () => {
+const Favorite = ({navigation}) => {
   const renderItem = ({item}) => (
-    <View style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => navigation.navigate('ProductPage', {product: item})}>
       <Image source={item.image} style={styles.image} resizeMode="contain" />
       <TouchableOpacity style={styles.heartIcon}>
         <Icon name="heart" size={20} color="red" />
       </TouchableOpacity>
       <Text style={styles.name}>{item.name}</Text>
       <Text style={styles.price}>{item.price}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -65,25 +66,17 @@ const Favorite = () => {
       />
 
       <View style={styles.bottomNavigation}>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navTextActive} size={24} color="#FF3B30">
-            HOME
-          </Text>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('HomePage')}>
+          <Text style={styles.navTextActive}>HOME</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navTextActive} size={24} color="#FF3B30">
-            NOTIFIKASI
-          </Text>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Notifikasi')}>
+          <Text style={styles.navTextActive}>NOTIFIKASI</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navTextActive} size={24} color="#FF3B30">
-            FAVORITE
-          </Text>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Favorite')}>
+          <Text style={styles.navTextActive}>FAVORITE</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navTextActive} size={24} color="#FF3B30">
-            USER
-          </Text>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Settings')}>
+          <Text style={styles.navTextActive}>USER</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -138,7 +131,7 @@ const styles = StyleSheet.create({
   bottomNavigation: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#FFD3DC', // pink muda
+    backgroundColor: '#FFD3DC',
     paddingVertical: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

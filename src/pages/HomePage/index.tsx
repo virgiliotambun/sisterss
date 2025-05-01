@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Button from '../../components/atoms/Button';
 
 const initialProducts = [
   {
@@ -42,7 +43,8 @@ const initialProducts = [
   },
 ];
 
-const Home = () => {
+
+const Home = ({navigation}) => {
   const [products, setProducts] = useState(initialProducts);
 
   const toggleFavorite = id => {
@@ -52,9 +54,25 @@ const Home = () => {
     setProducts(updated);
   };
 
+  const onSubmit = () => {
+    navigation.navigate('HomePage');
+  };
+  
+  const onSubmitNotifikasi = () => {
+    navigation.navigate('Notifikasi');
+  };
+  
+  const onSubmitFavorite = () => {
+    navigation.navigate('Favorite');
+  };
+  
+  const onSubmitUser = () => {
+    navigation.navigate('Settings');
+  };
+
   const renderItem = ({item}) => (
     <View style={styles.productCard}>
-      <Image source={item.image} style={styles.productImage} />
+      <TouchableOpacity onPress={() => navigation.navigate('ProductPage')}><Image source={item.image} style={styles.productImage} /></TouchableOpacity>
       <TouchableOpacity
         style={styles.favoriteIcon}
         onPress={() => toggleFavorite(item.id)}>
@@ -76,15 +94,26 @@ const Home = () => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
         <Image
           source={require('../../assets/ProfileBroski.svg')}
           style={styles.profilePhoto}
         />
+        </TouchableOpacity>
+        
         <TextInput
           placeholder="Search"
           placeholderTextColor="#999"
           style={styles.searchBar}
         />
+        <TouchableOpacity>
+          <Button
+            label="Search"
+            color="#FFCCE1"
+            textColor="white"
+            onPress={() => navigation.navigate('SearchResult')}
+          />
+        </TouchableOpacity>
       </View>
 
       {/* Product Grid */}
@@ -97,22 +126,22 @@ const Home = () => {
       />
 
       <View style={styles.bottomNavigation}>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem} onPress={onSubmit}>
           <Text style={styles.navTextActive} size={24} color="#FF3B30">
             HOME
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem} onPress={onSubmitNotifikasi}>
           <Text style={styles.navTextActive} size={24} color="#FF3B30">
             NOTIFIKASI
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem} onPress={onSubmitFavorite}>
           <Text style={styles.navTextActive} size={24} color="#FF3B30">
             FAVORITE
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem} onPress={onSubmitUser}>
           <Text style={styles.navTextActive} size={24} color="#FF3B30">
             USER
           </Text>

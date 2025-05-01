@@ -5,7 +5,7 @@ import TextInput from '../../components/molecules/TextInput';
 import Button from '../../components/atoms/Button';   
 import Gap from '../../components/atoms/Gap';     
 
-const ForgotPassword = () => {
+const ForgotPassword = ({navigation}) => {
   return (
     <View style={styles.pageContainer}>
       <Header title="Forgot Password" />
@@ -23,7 +23,7 @@ const ForgotPassword = () => {
         {/* BACK Button */}
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => {}}>
+          onPress={() => navigation.goBack()}>
           <Text style={styles.backText}>BACK</Text>
         </TouchableOpacity>
       </View>

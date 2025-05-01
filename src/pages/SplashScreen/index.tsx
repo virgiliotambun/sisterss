@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import Logo from '../../assets/logo.png'; // Import your logo image
-const SplashScreen = () => {
+const SplashScreen = ({navigation}) => {
+  useEffect(() => {
+    setTimeout(() => navigation.replace('SignIn'), 3000); // Navigate to SignIn after 3 seconds
+  }, []);
   return (
     <View style={styles.container}>
       <Image

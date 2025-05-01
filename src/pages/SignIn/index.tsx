@@ -5,7 +5,16 @@ import TextInput from '../../components/molecules/TextInput';
 import Button from '../../components/atoms/Button';
 import Gap from '../../components/atoms/Gap';
 
-const SignIn = () => {
+const SignIn = ({navigation}) => {
+
+  const onSubmit = () => {
+    navigation.navigate('HomePage');
+  };
+
+  const onSubmitForgotPassword = () => {
+    navigation.navigate('ForgotPassword');
+  };
+
   return (
     <View style={styles.pageContainer}>
       <View style={styles.headerContainer}>
@@ -18,15 +27,17 @@ const SignIn = () => {
         <Gap height={16} />
         <TextInput placeholder="password" secureTextEntry />
         <Gap height={24} />
-        <Button label="Continue" color="#FFCCE1" textColor="white" />
+        <Button label="Continue" color="#FFCCE1" textColor="white" onPress={onSubmit}/>
         <Gap height={10} />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onSubmitForgotPassword}>
           <Text style={styles.forgotPassword}>Forgot Password ? Reset</Text>
         </TouchableOpacity>
         <Gap height={40} />
         <View style={styles.separatorContainer}>
           <View style={styles.separatorLine} />
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
           <Text style={styles.separatorText}>Dont have an Account ? Create One</Text>
+          </TouchableOpacity>
           <View style={styles.separatorLine} />
         </View>
         <Gap height={30} />
