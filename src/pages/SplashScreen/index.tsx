@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import { Logo } from '../../assets';
-
-const SplashScreen = () => {
+import Logo from '../../assets/logo.png'; // Import your logo image
+const SplashScreen = ({navigation}) => {
+  useEffect(() => {
+    setTimeout(() => navigation.replace('SignIn'), 3000); // Navigate to SignIn after 3 seconds
+  }, []);
   return (
     <View style={styles.container}>
       <Image
@@ -23,9 +25,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 120,
-    height: 120,
+    width: 200,
+    height: 200,
     resizeMode: 'contain',
+    borderRadius: 100, // Make it circular
   },
 });
 
