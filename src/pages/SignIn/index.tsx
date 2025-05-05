@@ -1,15 +1,28 @@
-import React from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, Text, View, Image, TouchableOpacity, Alert} from 'react-native';
 import Header from '../../components/molecules/Header';
 import TextInput from '../../components/molecules/TextInput';
 import Button from '../../components/atoms/Button';
 import Gap from '../../components/atoms/Gap';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 
 const SignIn = ({navigation}) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const onSubmit = () => {
-    navigation.navigate('HomePage');
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        const user = userCredential.user;
+        Alert.alert('Success', 'Login successful!');
+        navigation.navigate('HomePage', {uid: user.uid});
+      })
+      .catch(error => {
+        Alert.alert('Login Failed', error.message);
+      });
   };
+  
 
   const onSubmitForgotPassword = () => {
     navigation.navigate('ForgotPassword');
@@ -22,21 +35,36 @@ const SignIn = ({navigation}) => {
       </View>
       <View style={styles.contentContainer}>
         <Gap height={26} />
-        <TextInput placeholder="Email Address"
+        <TextInput
+          placeholder="Email Address"
+          value={email}
+          onChangeText={setEmail}
         />
         <Gap height={16} />
-        <TextInput placeholder="password" secureTextEntry />
+        <TextInput
+          placeholder="Password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
         <Gap height={24} />
-        <Button label="Continue" color="#FFCCE1" textColor="white" onPress={onSubmit}/>
+        <Button
+          label="Continue"
+          color="#FFCCE1"
+          textColor="white"
+          onPress={onSubmit}
+        />
         <Gap height={10} />
         <TouchableOpacity onPress={onSubmitForgotPassword}>
-          <Text style={styles.forgotPassword}>Forgot Password ? Reset</Text>
+          <Text style={styles.forgotPassword}>Forgot Password? Reset</Text>
         </TouchableOpacity>
         <Gap height={40} />
         <View style={styles.separatorContainer}>
           <View style={styles.separatorLine} />
           <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-          <Text style={styles.separatorText}>Dont have an Account ? Create One</Text>
+            <Text style={styles.separatorText}>
+              Don't have an Account? Create One
+            </Text>
           </TouchableOpacity>
           <View style={styles.separatorLine} />
         </View>
@@ -125,6 +153,6 @@ const styles = StyleSheet.create({
     color: 'black',
     flex: 1,
     fontWeight: 'bold',
-  textAlign: 'center',
+    textAlign: 'center',
   },
 });

@@ -1,46 +1,93 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import Header from '../../components/molecules/Header';
 import TextInput from '../../components/molecules/TextInput';
 import Button from '../../components/atoms/Button';
 import Gap from '../../components/atoms/Gap';
+import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
+import {getDatabase, ref, set} from 'firebase/database';
 
 const SignUp = ({navigation}) => {
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onSubmit = () => {
+    const auth = getAuth();
+    const db = getDatabase();
+  
+    if (!firstname || !lastname || !email || !password) {
+      Alert.alert('Error', 'All fields are required!');
+      return;
+    }
+  
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        const user = userCredential.user;
+        // Simpan data user ke database Realtime
+        return set(ref(db, 'users/' + user.uid), {
+          firstname,
+          lastname,
+          email,
+        });
+      })
+      .then(() => {
+        Alert.alert('Success', 'Account created successfully!');
+        navigation.navigate('SignIn');
+      })
+      .catch(error => {
+        Alert.alert('Sign Up Error', error.message);
+      });
+  };
+
   return (
     <View style={styles.pageContainer}>
       <Header title="Create Account" />
       <View style={styles.contentContainer}>
-
-        <View style={styles.customerContainer}>
-    
-        </View>
         <Gap height={24} />
-
         <TextInput
           placeholder="Firstname"
+          value={firstname}
+          onChangeText={setFirstname}
           style={styles.inputStyle}
         />
         <Gap height={16} />
         <TextInput
           placeholder="Lastname"
+          value={lastname}
+          onChangeText={setLastname}
           style={styles.inputStyle}
         />
         <Gap height={16} />
         <TextInput
           placeholder="Email Address"
+          value={email}
+          onChangeText={setEmail}
           style={styles.inputStyle}
         />
         <Gap height={16} />
         <TextInput
           placeholder="Password"
           secureTextEntry={true}
+          value={password}
+          onChangeText={setPassword}
           style={styles.inputStyle}
         />
         <Gap height={24} />
-        <Button label="Continue" color="#FFCCE1" textColor="white" onPress={() => navigation.navigate('SignIn')}/>
+        <Button
+          label="Continue"
+          color="#FFCCE1"
+          textColor="white"
+          onPress={onSubmit}
+        />
         <Gap height={16} />
-        
-        {/* BACK Button */}
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}>
@@ -62,32 +109,12 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   inputStyle: {
-    backgroundColor: '#AFDDFF', // Diubah di sini
+    backgroundColor: '#AFDDFF',
     color: '#000000',
     borderRadius: 8,
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderWidth: 0,
-  },
-  customerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    marginTop: 10,
-  },
-  customerButton: {
-    backgroundColor: '#FFCCE1',
-    borderRadius: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  customerText: {
-    color: 'white',
-    fontWeight: 'bold',
   },
   backButton: {
     backgroundColor: '#FFE5EC',
@@ -107,6 +134,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
 
 export default SignUp;
