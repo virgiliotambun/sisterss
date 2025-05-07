@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/atoms/Button';
+import {getDatabase, ref, onValue} from 'firebase/database';
 
 const initialProducts = [
   {
@@ -43,8 +44,21 @@ const initialProducts = [
   },
 ];
 
+const Home = ({navigation, route}) => {
+  const {uid} = route.params;
+  const [user, setUser] = useState({});
+  const db = getDatabase();
 
-const Home = ({navigation}) => {
+  useEffect(() => {
+    const userRef = ref(db, 'users/' + uid);
+    onValue(userRef, snapshot => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        setUser(data);
+      }
+    });
+  }, []);
+
   const [products, setProducts] = useState(initialProducts);
 
   const toggleFavorite = id => {
@@ -57,22 +71,24 @@ const Home = ({navigation}) => {
   const onSubmit = () => {
     navigation.navigate('HomePage');
   };
-  
+
   const onSubmitNotifikasi = () => {
     navigation.navigate('Notifikasi');
   };
-  
+
   const onSubmitFavorite = () => {
     navigation.navigate('Favorite');
   };
-  
+
   const onSubmitUser = () => {
-    navigation.navigate('Settings');
+    navigation.navigate('Settings', {uid});
   };
 
   const renderItem = ({item}) => (
     <View style={styles.productCard}>
-      <TouchableOpacity onPress={() => navigation.navigate('ProductPage')}><Image source={item.image} style={styles.productImage} /></TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('ProductPage')}>
+        <Image source={item.image} style={styles.productImage} />
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.favoriteIcon}
         onPress={() => toggleFavorite(item.id)}>
@@ -94,13 +110,14 @@ const Home = ({navigation}) => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-        <Image
-          source={require('../../assets/ProfileBroski.svg')}
-          style={styles.profilePhoto}
-        />
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Settings', {uid})}>
+          <Image
+            source={require('../../assets/AnoninousProfile.svg')}
+            style={styles.profilePhoto}
+          />
         </TouchableOpacity>
-        
+
         <TextInput
           placeholder="Search"
           placeholderTextColor="#999"

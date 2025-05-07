@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity, Alert} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import Header from '../../components/molecules/Header';
 import TextInput from '../../components/molecules/TextInput';
 import Button from '../../components/atoms/Button';
@@ -22,7 +29,6 @@ const SignIn = ({navigation}) => {
         Alert.alert('Login Failed', error.message);
       });
   };
-  
 
   const onSubmitForgotPassword = () => {
     navigation.navigate('ForgotPassword');
