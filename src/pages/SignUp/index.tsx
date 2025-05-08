@@ -1,11 +1,5 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
 import Header from '../../components/molecules/Header';
 import TextInput from '../../components/molecules/TextInput';
 import Button from '../../components/atoms/Button';
@@ -22,17 +16,17 @@ const SignUp = ({navigation}) => {
   const onSubmit = () => {
     const auth = getAuth();
     const db = getDatabase();
-  
+
     if (!firstname || !lastname || !email || !password) {
       Alert.alert('Error', 'All fields are required!');
       return;
     }
-  
+
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
         const user = userCredential.user;
         // Simpan data user ke database Realtime
-        return set(ref(db, 'users/' + user.uid), {
+        set(ref(db, 'users/' + user.uid), {
           firstname,
           lastname,
           email,
@@ -123,7 +117,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignSelf: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,

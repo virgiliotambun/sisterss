@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,23 +7,38 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import {getDatabase, ref, onValue} from 'firebase/database';
 
-const Settingss = ({ navigation }) => {
+const Settingss = ({navigation, route}) => {
+  const {uid} = route.params;
+  const [user, setUser] = useState({});
+  const db = getDatabase();
+  useEffect(() => {
+    const userRef = ref(db, 'users/' + uid);
+    onValue(userRef, snapshot => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        setUser(data);
+      }
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Profile Section */}
         <View style={styles.profileWrapper}>
           <Image
-            source={{ uri: 'https://i.pravatar.cc/100' }}
+            source={require('../../assets/AnoninousProfile.svg')}
             style={styles.avatar}
           />
 
           <View style={styles.userInfoCard}>
             <View style={styles.userInfo}>
-              <Text style={styles.name}>Gilbert Jones</Text>
-              <Text style={styles.email}>Gilbertjones001@gmail.com</Text>
-              <Text style={styles.phone}>121-224-7890</Text>
+              <Text style={styles.name}>
+                {user.firstname} {user.lastname}
+              </Text>
+              <Text style={styles.email}>{user.email}</Text>
             </View>
           </View>
         </View>
@@ -39,7 +54,9 @@ const Settingss = ({ navigation }) => {
 
         {/* Sign Out */}
         <View style={styles.bottomWrapper}>
-          <TouchableOpacity style={styles.signOutButton} onPress={() => navigation.navigate('SignIn')}>
+          <TouchableOpacity
+            style={styles.signOutButton}
+            onPress={() => navigation.navigate('SignIn')}>
             <Text style={styles.signOutText}>Sign Out</Text>
           </TouchableOpacity>
         </View>
@@ -56,7 +73,8 @@ const Settingss = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate('Favorite')}>
           <Text style={styles.tabItem}>FAVORITE</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Settings', {uid})}>
           <Text style={styles.tabItem}>USER</Text>
         </TouchableOpacity>
       </View>
@@ -105,11 +123,6 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   email: {
-    color: '#999',
-    fontSize: 14,
-    marginTop: 4,
-  },
-  phone: {
     color: '#999',
     fontSize: 14,
     marginTop: 4,
