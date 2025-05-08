@@ -64,7 +64,8 @@ const Settingss = ({navigation, route}) => {
 
       {/* Tab Bar */}
       <View style={styles.tabBar}>
-        <TouchableOpacity onPress={() => navigation.navigate('HomePage')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('HomePage', {uid})}>
           <Text style={styles.tabItem}>HOME</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Notifikasi')}>
