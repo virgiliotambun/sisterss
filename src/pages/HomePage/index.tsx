@@ -69,7 +69,7 @@ const Home = ({navigation, route}) => {
   };
 
   const onSubmit = () => {
-    navigation.navigate('HomePage', {uid});
+    navigation.navigate('HomePage');
   };
 
   const onSubmitNotifikasi = () => {
@@ -77,7 +77,7 @@ const Home = ({navigation, route}) => {
   };
 
   const onSubmitFavorite = () => {
-    navigation.navigate('Favorite');
+    navigation.navigate('Favorite', {uid});
   };
 
   const onSubmitUser = () => {

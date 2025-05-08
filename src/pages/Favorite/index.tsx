@@ -6,8 +6,9 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {getDatabase, ref, onValue} from 'firebase/database';
 
 const Products = [
   {
@@ -40,7 +41,19 @@ const Products = [
   },
 ];
 
-const Favorite = ({navigation}) => {
+const Favorite = ({navigation, route}) => {
+  const {uid} = route.params;
+  const [user, setUser] = useState({});
+  const db = getDatabase();
+  useEffect(() => {
+    const userRef = ref(db, 'users/' + uid);
+    onValue(userRef, snapshot => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        setUser(data);
+      }
+    });
+  }, []);
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={styles.card}
@@ -66,16 +79,24 @@ const Favorite = ({navigation}) => {
       />
 
       <View style={styles.bottomNavigation}>
-        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('HomePage')}>
+        <TouchableOpacity
+          style={styles.navItem}
+          onPress={() => navigation.navigate('HomePage', {uid})}>
           <Text style={styles.navTextActive}>HOME</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Notifikasi')}>
+        <TouchableOpacity
+          style={styles.navItem}
+          onPress={() => navigation.navigate('Notifikasi')}>
           <Text style={styles.navTextActive}>NOTIFIKASI</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Favorite')}>
+        <TouchableOpacity
+          style={styles.navItem}
+          onPress={() => navigation.navigate('Favorite')}>
           <Text style={styles.navTextActive}>FAVORITE</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Settings')}>
+        <TouchableOpacity
+          style={styles.navItem}
+          onPress={() => navigation.navigate('Settings', {uid})}>
           <Text style={styles.navTextActive}>USER</Text>
         </TouchableOpacity>
       </View>
