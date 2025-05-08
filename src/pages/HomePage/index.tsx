@@ -69,7 +69,7 @@ const Home = ({navigation, route}) => {
   };
 
   const onSubmit = () => {
-    navigation.navigate('HomePage');
+    navigation.navigate('HomePage', {uid});
   };
 
   const onSubmitNotifikasi = () => {
